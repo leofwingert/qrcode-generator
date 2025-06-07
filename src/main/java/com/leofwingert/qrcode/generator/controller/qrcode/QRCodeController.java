@@ -1,6 +1,5 @@
 package com.leofwingert.qrcode.generator.controller.qrcode;
 
-import com.google.zxing.WriterException;
 import com.leofwingert.qrcode.generator.dto.QrCodeGenerateRequest;
 import com.leofwingert.qrcode.generator.dto.QrCodeGenerateResponse;
 import com.leofwingert.qrcode.generator.service.QrCodeGeneratorService;
@@ -9,8 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/qrcode")
