@@ -51,8 +51,8 @@ docker run --env-file .env -p 8080:8080 qrcode-generator
 
 ### Uso da API
 
-- POST /api/qrcode  
-  Requisição: JSON com text/URL  
+- POST /qrcode  
+  Requisição: JSON com text:"URL"  
   Resposta: URL da imagem do QR code (armazenada no S3)
 
 ## Referências
