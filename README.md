@@ -35,8 +35,6 @@ AWS_ACCESS_KEY_ID=sua-access-key
 AWS_SECRET_ACCESS_KEY=sua-secret-key  
 AWS_BUCKET_NAME=nome-do-seu-bucket  
 
-Ou configure como variáveis de ambiente.
-
 ### Build e Execução
 
 #### Localmente
