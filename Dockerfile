@@ -21,10 +21,9 @@ WORKDIR /app
 
 COPY --from=backend-build /app/target/*.jar app.jar
 
-ENV SERVER_PORT=8080
 ENV AWS_REGION=us-east-2
 ENV AWS_BUCKET_NAME=qr-code-storage-bucket27
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -Dserver.port=${PORT:-${SERVER_PORT:-8080}} -jar app.jar"]
