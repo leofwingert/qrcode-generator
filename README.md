@@ -58,3 +58,4 @@ docker run --env-file .env -p 8080:8080 qrcode-generator
 - Documentação Spring Boot: https://spring.io/projects/spring-boot
 - AWS SDK para Java v2: https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/home.html
 - Biblioteca ZXing QR Code: https://github.com/zxing/zxing
+

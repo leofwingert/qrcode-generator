@@ -33,5 +33,6 @@ public class QrCodeGeneratorService {
         String url = storage.uploadFile(pngQrCodeData, UUID.randomUUID().toString(), "image/png");
 
         return new QrCodeGenerateResponse(url);
+
     }
 }
