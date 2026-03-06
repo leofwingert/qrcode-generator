@@ -2,6 +2,11 @@
 
 Aplicacao full-stack para gerar codigos QR e armazena-los na AWS S3.
 
+## Estrutura de Pastas
+
+- `qrcode-frontend/` - app React + Vite
+- `qrcode-backend/` - API Spring Boot
+
 ## Funcionalidades
 
 - Gera codigos QR a partir de texto ou URLs.
@@ -30,7 +35,7 @@ Aplicacao full-stack para gerar codigos QR e armazena-los na AWS S3.
 
 ### Configuracao
 
-Defina suas credenciais AWS em um arquivo `.env`:
+Defina suas credenciais AWS em um arquivo `.env` na raiz do projeto:
 
 ```dotenv
 AWS_REGION=sua-regiao
@@ -41,23 +46,34 @@ AWS_BUCKET_NAME=nome-do-seu-bucket
 
 ## Build e Execucao
 
-### Localmente (backend)
+### Localmente
+
+#### Backend
 
 ```bash
-mvn clean package
-java -jar target/qrcode.generator-0.0.1-SNAPSHOT.jar
+cd qrcode-backend
+./mvnw clean package
+./mvnw spring-boot:run
+```
+
+#### Frontend
+
+```bash
+cd qrcode-frontend
+npm install
+npm run dev
 ```
 
 ### Docker (frontend + backend na mesma imagem)
 
-A imagem ja empacota o frontend em `src/main/resources/static` durante o build.
+A imagem empacota o frontend em `qrcode-backend/src/main/resources/static` durante o build.
 
 ```bash
 docker build -t qrcode-generator:latest .
 docker run --env-file .env -p 8080:8080 qrcode-generator:latest
 ```
 
-Apos subir o container:
+Apos subir:
 
 - UI: `http://localhost:8080`
 - API: `POST http://localhost:8080/qrcode`

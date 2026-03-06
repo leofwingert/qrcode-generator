@@ -1,19 +1,30 @@
-FROM maven:3.9.6-eclipse-temurin-21 AS build
+FROM node:22-alpine AS frontend-build
+WORKDIR /frontend
+
+COPY qrcode-frontend/package*.json ./
+RUN npm ci
+
+COPY qrcode-frontend/ ./
+RUN npm run build
+
+FROM maven:3.9.6-eclipse-temurin-21 AS backend-build
 WORKDIR /app
-COPY pom.xml .
-COPY src ./src
-RUN mvn clean package -DskipTests
+
+COPY qrcode-backend/pom.xml ./pom.xml
+COPY qrcode-backend/src ./src
+COPY --from=frontend-build /frontend/dist/ ./src/main/resources/static/
+
+RUN mvn -B clean package -DskipTests
 
 FROM eclipse-temurin:21-jre
 WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
 
-ARG AWS_ACCESS_KEY_ID
-ARG AWS_SECRET_ACCESS_KEY
-ARG AWS_REGION
-ARG AWS_BUCKET_NAME
+COPY --from=backend-build /app/target/*.jar app.jar
 
-ENV AWS_BUCKET_NAME=${AWS_BUCKET_NAME}
-ENV AWS_REGION=${AWS_REGION}
+ENV SERVER_PORT=8080
+ENV AWS_REGION=us-east-2
+ENV AWS_BUCKET_NAME=qr-code-storage-bucket27
+
+EXPOSE 8080
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
