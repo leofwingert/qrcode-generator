@@ -1,61 +1,88 @@
 # Gerador de QR Code
 
-Uma aplicação Spring Boot para gerar códigos QR e armazená-los na AWS S3.
+Aplicacao full-stack para gerar codigos QR e armazena-los na AWS S3.
 
 ## Funcionalidades
 
-- Gera códigos QR a partir de texto ou URLs.
-- Armazena os códigos QR gerados em um bucket S3 da AWS.
-- API RESTful para geração e recuperação de códigos QR.
+- Gera codigos QR a partir de texto ou URLs.
+- Armazena os codigos QR gerados em um bucket S3 da AWS.
+- Frontend React e API Spring Boot no mesmo deploy Docker.
 
 ## Tecnologias Utilizadas
 
 - Java 21
 - Spring Boot 3.5
 - Maven
+- React + Vite
 - AWS SDK v2 (S3)
-- ZXing (geração de QR Code)
+- ZXing (geracao de QR Code)
 - Docker
 
-## Como Começar
+## Como Comecar
 
-### Pré-requisitos
+### Pre-requisitos
 
 - Java 21+
 - Maven
-- Docker (opcional, para containerização)
+- Node.js 22+ (apenas para dev local do frontend)
+- Docker
 - Conta AWS com bucket S3
 
-### Configuração
+### Configuracao
 
-Defina suas credenciais AWS e bucket em um arquivo `.env`:
+Defina suas credenciais AWS em um arquivo `.env`:
 
-AWS_REGION=sua-regiao  
-AWS_ACCESS_KEY_ID=sua-access-key  
-AWS_SECRET_ACCESS_KEY=sua-secret-key  
-AWS_BUCKET_NAME=nome-do-seu-bucket  
+```dotenv
+AWS_REGION=sua-regiao
+AWS_ACCESS_KEY_ID=sua-access-key
+AWS_SECRET_ACCESS_KEY=sua-secret-key
+AWS_BUCKET_NAME=nome-do-seu-bucket
+```
 
-### Build e Execução
+## Build e Execucao
 
-#### Localmente
+### Localmente (backend)
 
-mvn clean package  
+```bash
+mvn clean package
 java -jar target/qrcode.generator-0.0.1-SNAPSHOT.jar
+```
 
-#### Com Docker
+### Docker (frontend + backend na mesma imagem)
 
-docker build -t qrcode-generator .  
-docker run --env-file .env -p 8080:8080 qrcode-generator
+A imagem ja empacota o frontend em `src/main/resources/static` durante o build.
 
-### Uso da API
+```bash
+docker build -t qrcode-generator:latest .
+docker run --env-file .env -p 8080:8080 qrcode-generator:latest
+```
 
-- POST /qrcode  
-  Requisição: JSON com text:"URL"  
-  Resposta: URL da imagem do QR code (armazenada no S3)
+Apos subir o container:
 
-## Referências
+- UI: `http://localhost:8080`
+- API: `POST http://localhost:8080/qrcode`
 
-- Documentação Spring Boot: https://spring.io/projects/spring-boot
-- AWS SDK para Java v2: https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/home.html
-- Biblioteca ZXing QR Code: https://github.com/zxing/zxing
+## Uso da API
 
+- Endpoint: `POST /qrcode`
+- Body JSON:
+
+```json
+{
+  "text": "https://exemplo.com"
+}
+```
+
+- Resposta JSON:
+
+```json
+{
+  "url": "https://bucket.s3.region.amazonaws.com/arquivo"
+}
+```
+
+## Referencias
+
+- Spring Boot: https://spring.io/projects/spring-boot
+- AWS SDK Java v2: https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/home.html
+- ZXing: https://github.com/zxing/zxing
