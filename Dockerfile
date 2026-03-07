@@ -1,18 +1,8 @@
-FROM node:22-alpine AS frontend-build
-WORKDIR /frontend
-
-COPY qrcode-frontend/package*.json ./
-RUN npm ci
-
-COPY qrcode-frontend/ ./
-RUN npm run build
-
 FROM maven:3.9.6-eclipse-temurin-21 AS backend-build
 WORKDIR /app
 
 COPY qrcode-backend/pom.xml ./pom.xml
 COPY qrcode-backend/src ./src
-COPY --from=frontend-build /frontend/dist/ ./src/main/resources/static/
 
 RUN mvn -B clean package -DskipTests
 
